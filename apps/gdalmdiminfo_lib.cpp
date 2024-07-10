@@ -179,6 +179,13 @@ static void DumpValue(CPLJSonStreamingWriter &serializer, const GByte *bytes,
         case GDT_UInt64:
             DumpValue<std::uint64_t>(serializer, bytes);
             break;
+        case GDT_Float16:
+#ifdef HAVE_SIZEOF__FLOAT16
+            DumpValue<_Float16>(serializer, bytes);
+#else
+            CPLError(CE_Failure, CPLE_NotSupported, "TODO: Support _Float16");
+#endif
+            break;
         case GDT_Float32:
             DumpValue<float>(serializer, bytes);
             break;
@@ -190,6 +197,13 @@ static void DumpValue(CPLJSonStreamingWriter &serializer, const GByte *bytes,
             break;
         case GDT_CInt32:
             DumpComplexValue<GInt32>(serializer, bytes);
+            break;
+        case GDT_CFloat16:
+#ifdef HAVE_SIZEOF__FLOAT16
+            DumpComplexValue<_Float16>(serializer, bytes);
+#else
+            CPLError(CE_Failure, CPLE_NotSupported, "TODO: Support _Float16");
+#endif
             break;
         case GDT_CFloat32:
             DumpComplexValue<float>(serializer, bytes);
